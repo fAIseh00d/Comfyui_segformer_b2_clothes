@@ -70,15 +70,16 @@ class segformer_b2_clothes:
                 }
         }
 
-    RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("mask_image",)
+    RETURN_TYPES = ("IMAGE", "MASK")
+    RETURN_NAMES = ("mask_image", "mask")
     OUTPUT_NODE = True
     FUNCTION = "sample"
     CATEGORY = "CXH"
 
     def sample(self,image,Face,Hat,Hair,Upper_clothes,Skirt,Pants,Dress,Belt,l_shoe,r_shoe,l_leg,r_leg,l_arm,r_arm,Bag,Scarf,):
         
-        results = []
+        rgb_results = []
+        mask_results = []
         for item in image:
         
             # seg切割结果，衣服pil
@@ -122,9 +123,12 @@ class segformer_b2_clothes:
             mask = np.isin(pred_seg, labels_to_keep).astype(np.uint8)
             
             # 创建agnostic-mask图像
-            mask_image = Image.fromarray(mask * 255)
-            mask_image = mask_image.convert("RGB")
+            rgb_image = Image.fromarray(mask * 255)
+            mask_image = Image.fromarray((1.0 - mask) * 255)
+            rgb_image = rgb_image.convert("RGB")
             mask_image = pil2tensor(mask_image)
-            results.append(mask_image)
+            rgb_image = pil2tensor(rgb_image)
+            mask_results.append(mask_image)
+            rgb_results.append(rgb_image)
 
-        return (torch.cat(results, dim=0),)
+        return (torch.cat(rgb_results, dim=0),torch.cat(mask_results, dim=0),)
