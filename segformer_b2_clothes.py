@@ -51,7 +51,7 @@ class segformer_b2_clothes:
         return {"required":
                 {     
                  "image":("IMAGE", {"default": "","multiline": False}),
-                 "Face": ("BOOLEAN", {"default": True, "label_on": "enabled脸部", "label_off": "disabled"}),
+                 "Face": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Hat": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Hair": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Upper_clothes": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
@@ -59,9 +59,12 @@ class segformer_b2_clothes:
                  "Pants": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Dress": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Belt": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
-                 "shoe": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
-                 "leg": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
-                 "arm": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
+                 "l_shoe": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
+                 "r_shoe": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
+                 "l_leg": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
+                 "r_leg": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
+                 "l_arm": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
+                 "r_arm": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Bag": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                  "Scarf": ("BOOLEAN", {"default": True, "label_on": "enabled", "label_off": "disabled"}),
                 }
@@ -73,7 +76,7 @@ class segformer_b2_clothes:
     FUNCTION = "sample"
     CATEGORY = "CXH"
 
-    def sample(self,image,Face,Hat,Hair,Upper_clothes,Skirt,Pants,Dress,Belt,shoe,leg,arm,Bag,Scarf):
+    def sample(self,image,Face,Hat,Hair,Upper_clothes,Skirt,Pants,Dress,Belt,l_shoe,r_shoe,l_leg,r_leg,l_arm,r_arm,Bag,Scarf,):
         
         results = []
         for item in image:
@@ -97,16 +100,19 @@ class segformer_b2_clothes:
                 labels_to_keep.append(7)
             if not Belt:
                 labels_to_keep.append(8)
-            if not shoe:
+            if not l_shoe:
                 labels_to_keep.append(9)
+            if not r_shoe:
                 labels_to_keep.append(10)
             if not Face:
                 labels_to_keep.append(11)
-            if not leg:
+            if not l_leg:
                 labels_to_keep.append(12)
+            if not r_leg:
                 labels_to_keep.append(13)
-            if not arm:
+            if not l_arm:
                 labels_to_keep.append(14) 
+            if not r_arm:
                 labels_to_keep.append(15) 
             if not Bag:
                 labels_to_keep.append(16)
